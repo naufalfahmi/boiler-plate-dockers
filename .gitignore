@@ -1,0 +1,48 @@
+# Environment files
+.env
+projects/*/.env
+
+# Database data
+projects/*/data/mysql/
+shared/certbot/
+shared/letsencrypt/
+
+# Logs
+*.log
+logs/
+
+# Docker volumes
+volumes/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+
+# Node modules (if any)
+node_modules/
+
+# Composer vendor (if any)
+vendor/
+
+# Cache files
+cache/
+*.cache
