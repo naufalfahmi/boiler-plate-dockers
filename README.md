@@ -72,8 +72,22 @@ make test
 ### 3. Access Applications
 
 #### 🌐 Web Applications
-- **App Bosowa (PHP 8.3)**: http://localhost:8081
-- **App Lain (PHP 8.2)**: http://localhost:8082
+- **App Bosowa (PHP 8.3)**: http://localhost:8080
+- **App Lain (PHP 8.2)**: http://localhost:8080 (dengan Host: app-lain.localhost)
+
+**Cara Akses App Lain:**
+- **Method 1**: Tambahkan entry di `/etc/hosts`:
+  ```bash
+  127.0.0.1 app-lain.localhost
+  ```
+  Lalu akses: http://app-lain.localhost:8080
+
+- **Method 2**: Gunakan curl dengan custom Host header:
+  ```bash
+  curl -H "Host: app-lain.localhost" http://localhost:8080
+  ```
+
+- **Method 3**: Gunakan browser extension untuk mengubah Host header
 
 #### 🗄️ Database Access
 ```
@@ -163,7 +177,7 @@ TZ=Asia/Jakarta
 ┌─────────────────┐    ┌─────────────────┐
 │   App Bosowa    │    │   App Lain      │
 │   (PHP 8.3)     │    │   (PHP 8.2)     │
-│   Port: 8081    │    │   Port: 8082    │
+│   Port: 8080    │    │   Port: 8080    │
 └─────────────────┘    └─────────────────┘
          │                       │
          └───────────────────────┼───────────────────────┐
@@ -194,8 +208,8 @@ TZ=Asia/Jakarta
 ## 📊 Resource Usage
 
 ### Current Ports
-- **App Bosowa**: localhost:8081
-- **App Lain**: localhost:8082
+- **App Bosowa**: localhost:8080
+- **App Lain**: localhost:8080 (dengan Host: app-lain.localhost)
 - **App Bosowa MySQL**: localhost:3307
 - **App Lain MySQL**: localhost:3309
 - **Shared Redis**: localhost:6379
@@ -262,8 +276,7 @@ docker exec shared-redis redis-cli BGSAVE
 1. **Port Conflicts**
    ```bash
    # Check port usage
-   lsof -i :8081
-   lsof -i :8082
+   lsof -i :8080
    lsof -i :3307
    lsof -i :3309
    ```
@@ -309,16 +322,27 @@ make up
 ## 🎯 Current Status
 
 ✅ **All Services Running**
-- App Bosowa (PHP 8.3): http://localhost:8081
-- App Lain (PHP 8.2): http://localhost:8082
+- App Bosowa (PHP 8.3): http://localhost:8080
+- App Lain (PHP 8.2): http://localhost:8080 (dengan Host: app-lain.localhost)
 - App Bosowa MySQL: localhost:3307
 - App Lain MySQL: localhost:3309
 - Shared Redis: localhost:6379
+- Shared Nginx: localhost:8080 (reverse proxy)
 
 ✅ **All Tests Passing**
 - Redis connection: PONG
 - App Bosowa MySQL: mysqld is alive
 - App Lain MySQL: mysqld is alive
+- PHP extensions: All loaded (Redis, PDO MySQL, GD, ZIP, Intl)
+- Database connections: Working
+- Static assets: Cached properly
+
+✅ **Recent Fixes Applied**
+- Fixed Docker Compose version warnings (removed obsolete version attribute)
+- Fixed network configuration (shared-network as external)
+- Fixed Nginx configuration for HTTP-only development
+- Fixed port conflicts and host resolution issues
+- All services now running without errors
 
 ---
 
