@@ -1,0 +1,69 @@
+# ---------------------------------------------------------
+# projects/app-lain/docker-compose.yml
+# Docker Compose untuk App Lain (PHP 8.2 + MySQL 8.0)
+# ---------------------------------------------------------
+version: "3.9"
+
+name: app-lain
+
+services:
+  # App Lain PHP dengan config sendiri (PHP 8.2)
+  app-lain-php:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: app-lain-php
+    volumes:
+      - ./src:/var/www/html:cached
+      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+    environment:
+      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT:-256M}
+      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE:-32M}
+      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE:-32M}
+      TZ: ${TZ:-Asia/Jakarta}
+    networks:
+      - app-lain-network
+      - shared-network
+    healthcheck:
+      test: ["CMD-SHELL", "php -v || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  # Database khusus untuk App Lain (MySQL 8.0)
+  app-lain-mysql:
+    image: mysql:${MYSQL_VERSION:-8.0}
+    container_name: app-lain-mysql
+    command: [
+      "--default-authentication-plugin=mysql_native_password",
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci",
+      "--bind-address=0.0.0.0"
+    ]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-supersecretroot}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-app_lain}
+      MYSQL_USER: ${MYSQL_USER:-app_lain}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-supersecretuser}
+      TZ: ${TZ:-Asia/Jakarta}
+    ports:
+      - "${MYSQL_PORT:-3308}:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./config/mysql.cnf:/etc/mysql/conf.d/custom.cnf:ro
+    networks:
+      - app-lain-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER:-app_lain} -p${MYSQL_PASSWORD:-supersecretuser} --silent"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+volumes:
+  mysql_data:
+
+networks:
+  app-lain-network:
+    driver: bridge
+  shared-network:
+    external: true

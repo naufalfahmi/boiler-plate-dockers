@@ -1,0 +1,20 @@
+[mysqld]
+# MySQL 8.0 configuration untuk App Lain
+default-authentication-plugin=mysql_native_password
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+bind-address=0.0.0.0
+
+# Performance settings
+innodb_buffer_pool_size=128M
+max_connections=100
+
+# Logging
+general_log=1
+general_log_file=/var/log/mysql/general.log
+slow_query_log=1
+slow_query_log_file=/var/log/mysql/slow.log
+long_query_time=2
+
+[mysql]
+default-character-set=utf8mb4
