@@ -2,7 +2,6 @@
 # projects/app-bosowa/docker-compose.yml
 # Docker Compose untuk App Bosowa (PHP 8.3 + MySQL 8.0)
 # ---------------------------------------------------------
-version: "3.9"
 
 name: app-bosowa
 

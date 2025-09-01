@@ -2,7 +2,6 @@
 # shared/docker-compose.yml
 # Shared Infrastructure: Redis + Nginx + Let's Encrypt
 # ---------------------------------------------------------
-version: "3.9"
 
 name: shared-infrastructure
 

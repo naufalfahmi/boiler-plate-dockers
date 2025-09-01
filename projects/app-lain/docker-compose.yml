@@ -2,7 +2,6 @@
 # projects/app-lain/docker-compose.yml
 # Docker Compose untuk App Lain (PHP 8.2 + MySQL 8.0)
 # ---------------------------------------------------------
-version: "3.9"
 
 name: app-lain
 
@@ -47,7 +46,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-supersecretuser}
       TZ: ${TZ:-Asia/Jakarta}
     ports:
-      - "${MYSQL_PORT:-3308}:3306"
+      - "${MYSQL_PORT:-3309}:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
       - ./config/mysql.cnf:/etc/mysql/conf.d/custom.cnf:ro
